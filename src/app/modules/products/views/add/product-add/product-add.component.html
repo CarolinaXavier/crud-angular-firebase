@@ -1,0 +1,94 @@
+<div class="col-md-12 ">
+    <div class="jumbotron">
+        <div class="page-header mb-8 box-perspective">
+            <div class="header-title">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span class=" navbar navbar-expand-lg navbar-light mb-20 f-lgreen f-2 f-bold"><h3
+                                class="wize-add-button mr-10">{{title}}</h3></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <form [formGroup]="form" (ngSubmit)="onSave()">
+            <input id="name" [ngClass]="formCustom.displayFieldCss('expiration_date', form)"
+                formControlName="expiration_date" class="form-control" placeholder="Nome" type="hidden">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="col-md-12 mb-2 padding-none">
+                        <label>Nome*:</label>
+                        <input id="name" [ngClass]="formCustom.displayFieldCss('name', form)" formControlName="name"
+                            class="form-control" placeholder="Nome" required>
+                    </div>
+                    <span class="error-input" [hidden]="!formCustom.isFieldValid('name', form)">Campo
+                        obrigatório.</span>
+                    <div class="col-md-12 mb-2 padding-none">
+                        <fieldset class="form-group">
+                            <label>Descrição *</label>
+                            <textarea [ngClass]="formCustom.displayFieldCss('description', form)" class="form-control"
+                                formControlName="description" placeholder="É necessário uma descrição."></textarea>
+                        </fieldset>
+                    </div>
+                    <span class="error-input" [hidden]="!formCustom.isFieldValid('description', form)">Campo
+                        obrigatório.</span>
+                    <div class="col-md-12 mb-2 padding-none">
+                        <label>Custo produção*:</label>
+                        <input [ngClass]="formCustom.displayFieldCss('production_cost', form)"
+                            formControlName="production_cost" class="form-control" placeholder="" currencyMask>
+                    </div>
+                    <span class="error-input" [hidden]="!formCustom.isFieldValid('production_cost', form)">Campo
+                        obrigatório.</span>
+                    <div class="col-md-12 mb-2 padding-none">
+                        <label>Valor Venda*:</label>
+                        <input (ngModelChange)="productionChange($event)"
+                            [ngClass]="formCustom.displayFieldCss('sales_value', form)" formControlName="sales_value"
+                            class="form-control" placeholder="" currencyMask>
+                    </div>
+                    <span class="error-input" [hidden]="!formCustom.isFieldValid('sales_value', form)">Campo
+                        obrigatório.</span>
+                    <div class="col-md-12 mb-2 padding-none">
+                        <label>Valor Lucro*:</label>
+                        <input [ngClass]="formCustom.displayFieldCss('profit_amount', form)"
+                            formControlName="profit_amount" class="form-control" placeholder="" currencyMask>
+                    </div>
+                    <span class="error-input" [hidden]="!formCustom.isFieldValid('profit_amount', form)">Campo
+                        obrigatório.</span>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group col-6">
+                        <label>Selecione as imagens*:</label>
+                        <input type="file" id="file" #userPhoto (change)="onFileSelected($event)" name="image"
+                            autocomplete="off" accept="image/x-png,image/jpeg" />
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3" *ngFor="let midia of model.images ; let i = index;">
+                                <div>
+                                    <input id="male" type="radio" (click)="onDefault(midia.name)" value="{{midia.name}}"
+                                        formControlName="photo_default">
+                                    <label>Imagem principal</label>
+                                </div>
+                                <img src="{{midia.url}}" class="img-fluid" alt="Responsive image">
+                                <button type="button" class="btn btn-danger ml-2"
+                                    (click)="removeImage(i,midia.url)">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <button ngbTooltip="Salvar este registro" type="submit" class="btn btn-success float-center mb-2 mr-2">
+                    SALVAR
+                </button>
+                <button ngbTooltip="Salvar este registro  float-right" class="btn mb-2 mr-2 btn-primary "
+                    (click)="onBack()">
+                    VOLTAR
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

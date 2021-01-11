@@ -3,8 +3,21 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyDKL5KY1bARG_euVAPNF9SkwUWY9RR4KhY",
+    authDomain: "crud-products-e08be.firebaseapp.com",
+    databaseURL: "https://crud-products-e08be-default-rtdb.firebaseio.com",
+    projectId: "crud-products-e08be",
+    storageBucket: "crud-products-e08be.appspot.com",
+    messagingSenderId: "330102465006",
+    appId: "1:330102465006:web:12165f9521724591566eff"
+  }
 };
+
+
+// Initialize Firebase
+/* firebase.initializeApp(firebaseConfig); */
 
 /*
  * For easier debugging in development mode, you can import the following file

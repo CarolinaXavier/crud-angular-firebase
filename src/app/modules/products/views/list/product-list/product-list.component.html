@@ -1,0 +1,55 @@
+<nav aria-label="breadcrumb">
+    <div class="breadcrumb">
+        <h2 class="breadcrumb-item active" aria-current="page">Lista de Produtos</h2>
+    </div>
+    <div class="d-flex flex-row-reverse bd-highlight">
+        <div class="d-flex flex-row-reverse bd-highlight mb-2">
+            <div>
+                <button type="button" class="btn btn-success" (click)="add()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>% de Lucro</th>
+            <th>Data de Validade</th>
+            <th>Ações</th>
+            <th>
+                <div class="p-2 bd-highlight">
+                    <select (change)="onTableSizeChange($event)" class="custom-select">
+                        <option *ngFor="let size of tableSizes" [ngValue]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let prod of products | paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              };
+        let i = index" [class.active]="i == currentIndex">
+            <th scope="row"><img src="{{prod.main_image}}" class="img-fluid"></th>
+            <th scope="row">{{prod.name}}</th>
+            <td>{{prod.percentage_profit}}%</td>
+            <td>{{prod.expiration_date | date:'dd/MM/yyyy'}}</td>
+            <td> <button type="button" class="btn btn-primary" (click)="edit(prod, prod.key)">Editar</button>
+                <button type="button" class="btn btn-danger ml-2" (click)="delete(prod,prod.key)">Excluir</button>
+            </td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    <pagination-controls responsive="true" previousLabel="Prev" nextLabel="Next"
+        (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+</div>
