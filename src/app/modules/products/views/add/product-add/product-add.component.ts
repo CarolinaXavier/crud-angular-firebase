@@ -66,42 +66,21 @@ export class ProductAddComponent implements OnInit {
 
   onSave() {
     if (this.key) {
-      if (this.form.valid) {
+      if (this.onCheckForm()) {
         if (this.listCheckedEqual()) {
-          if (this.model.images.length > 0) {
-            this.onSetDefaultImage();
-            let validated_date = new Date();
-            validated_date.setDate(validated_date.getDate() + 60);
-            console.log(validated_date);
-            this.form.patchValue({ created_date: new Date() });
-            this.form.patchValue({ expiration_date: new Date() });
-            this.form.get('expiration_date').patchValue(validated_date);
-            this.form.patchValue({ updated_date: new Date() });
-            this.model.fromFormGroup(this.form);
-            this.productService.update(this.model, this.key);
-            this.router.navigate(['/']);
-          } else {
-            this.toast.error('Selecione pelo menos uma imagem!');
-          }
+          this.productService.update(this.model, this.key);
+          this.router.navigate(['/']);
         } else {
           this.toast.error('Este nome já existe!');
         }
-      } else {
-        this.formCustom.validateAllFormFields(this.form);
-        this.toast.error('Por favor, Corrija os campos destacados em vermelho!');
       }
     } else {
-      if (this.form.valid) {
+      if (this.onCheckForm()) {
         if (this.listCheckedEqual()) {
-          this.onSetDefaultImage();
           this.productService.insert(this.model).then(result => {
             this.key = result;
             if (this.key) {
-              let validated_date = new Date();
-              validated_date.setDate(validated_date.getDate() + 60);
               this.form.patchValue({ created_date: new Date() });
-              this.form.patchValue({ expiration_date: validated_date });
-              this.model.fromFormGroup(this.form);
               this.productService.update(this.model, this.key);
             }
           });
@@ -109,9 +88,6 @@ export class ProductAddComponent implements OnInit {
         } else {
           this.toast.error('Este nome já existe!');
         }
-      } else {
-        this.formCustom.validateAllFormFields(this.form);
-        this.toast.error('Por favor, Corrija os campos destacados em vermelho!');
       }
     }
   }
@@ -197,12 +173,46 @@ export class ProductAddComponent implements OnInit {
     this.model = null;
     this.router.navigate(['/']);
   }
+
   onSetDefaultImage() {
     if (this.model.images.length === 1) {
       this.model.images.forEach(element => {
         element.default = true;
         this.model.main_image = element.url;
       });
+    }
+  }
+  onCheckForm() {
+    if (this.form.valid) {
+      let validated_date = new Date();
+      validated_date.setDate(validated_date.getDate() + 60);
+      this.form.patchValue({ expiration_date: validated_date });
+      this.model.fromFormGroup(this.form);
+      if (this.model.images.length > 0) {
+        this.onSetDefaultImage();
+        this.model.fromFormGroup(this.form);
+      }
+      else {
+        this.toast.error('Selecione pelo menos uma imagem!');
+        return false;
+      }
+      if (this.form.get('production_cost').value == 0) {
+        this.toast.error('Custo de produção não pode ser R$ 0,00');
+        return false;
+      }
+      if (this.form.get('sales_value').value == 0) {
+        this.toast.error('Valor venda não pode ser R$ 0,00');
+        return false;
+      }
+      if (this.form.get('sales_value').value < this.form.get('production_cost').value) {
+        this.toast.error('Valor venda não pode ser menor que o custo de produção');
+        return false;
+      }
+      return true;
+    } else {
+      this.formCustom.validateAllFormFields(this.form);
+      this.toast.error('Por favor, Corrija os campos destacados em vermelho!');
+      return false;
     }
   }
 }

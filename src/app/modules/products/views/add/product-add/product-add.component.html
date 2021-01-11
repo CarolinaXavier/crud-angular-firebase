@@ -25,6 +25,7 @@
                     </div>
                     <span class="error-input" [hidden]="!formCustom.isFieldValid('name', form)">Campo
                         obrigatório.</span>
+                        
                     <div class="col-md-12 mb-2 padding-none">
                         <fieldset class="form-group">
                             <label>Descrição *</label>
@@ -41,6 +42,7 @@
                     </div>
                     <span class="error-input" [hidden]="!formCustom.isFieldValid('production_cost', form)">Campo
                         obrigatório.</span>
+                        
                     <div class="col-md-12 mb-2 padding-none">
                         <label>Valor Venda*:</label>
                         <input (ngModelChange)="productionChange($event)"
